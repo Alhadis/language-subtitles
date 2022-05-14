@@ -48,6 +48,14 @@ repository:
 		patterns: [include: "#text"]
 
 
+	# Quotation dash
+	dash:
+		name:  "markup.quote.quotation-dash.srt"
+		match: "(?:^|\\G)(-)"
+		captures:
+			1: name: "punctuation.section.quote.srt"
+
+
 	# <font color="#BBAAFF">Coloured text</font>
 	font:
 		contentName: "markup.other.font.srt"
@@ -95,6 +103,19 @@ repository:
 			2: name: "entity.name.tag.inline.i.html"
 			3: name: "punctuation.definition.tag.end.html.srt"
 		patterns: [include: "#text"]
+
+
+
+	# Speaker's name preceding caption (often "IN UPPERCASE:")
+	speaker:
+		match: "(?:^|\\G)(-[ \\t]*)?((?:[^-<>\\s:][^:]*(?=:[ \\t]*\\S)|[^-<>\\s:a-z][^:a-z]*)(:))(?=$|\\s)"
+		captures:
+			1: patterns: [include: "#dash"]
+			2: name: "entity.name.speaker.srt", patterns: [
+				{include: "#formatting"}
+				{include: "#action"}
+			]
+			3: name: "punctuation.separator.speaker.colon.srt"
 
 
 	# Strikethrough text
@@ -146,6 +167,8 @@ repository:
 	# Constituents of an individual subtitle (i.e., anything after the timecode line)
 	text:
 		patterns: [
+			{include: "#speaker"}
+			{include: "#dash"}
 			{include: "#action"}
 			{include: "#formatting"}
 		]
