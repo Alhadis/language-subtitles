@@ -1,0 +1,18 @@
+{
+	"name": "language-subtitles",
+	"version": "0.0.0",
+	"description": "Syntax highlighting for various timed text formats.",
+	"repository": "https://github.com/Alhadis/language-subtitles",
+	"author": "John Gardner <gardnerjohng@gmail.com>",
+	"license": "ISC",
+	"keywords": [
+		"closed captions",
+		"srt",
+		"subrip text",
+		"subtitles",
+		"timed text",
+		"webvtt",
+		"vtt"
+	],
+	"engines": {"atom": "*"}
+}
