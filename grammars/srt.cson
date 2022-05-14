@@ -105,6 +105,15 @@ repository:
 		patterns: [include: "#text"]
 
 
+	# ♪ Lyrics to background music ♪
+	lyrics:
+		name:  "markup.quote.lyrics.srt"
+		begin: "(♪+)[ \\t]*"
+		end:   "[ \\t]*(♪+)|(?=^-|^[ \\t]*$|\\s*</)"
+		beginCaptures: 1: name: "punctuation.definition.lyrics.begin.srt"
+		endCaptures:   1: name: "punctuation.definition.lyrics.end.srt"
+		patterns: [include: "#formatting"]
+
 
 	# Speaker's name preceding caption (often "IN UPPERCASE:")
 	speaker:
@@ -170,6 +179,7 @@ repository:
 			{include: "#speaker"}
 			{include: "#dash"}
 			{include: "#action"}
+			{include: "#lyrics"}
 			{include: "#formatting"}
 		]
 
