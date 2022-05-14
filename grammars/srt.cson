@@ -119,10 +119,10 @@ repository:
 	# Individual subtitles, beginning with an integer and terminated by an empty line
 	subtitle:
 		name:  "meta.subtitle.srt"
-		begin: "^\\d+$"
+		begin: "^(?:\uFEFF?)(\\d+)$"
 		end:   "^[ \\t]*$"
 		beginCaptures:
-			0: name: "entity.name.section.srt"
+			1: name: "entity.name.section.srt"
 		patterns: [{
 			# Second line of subtitle block
 			begin: "\\G\\s*"
