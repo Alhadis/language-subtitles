@@ -11,9 +11,18 @@ repository:
 	# An action or sound enclosed by [square] or (round) brackets
 	action:
 		patterns: [{
-			name:  "string.quoted.other.sound.action.srt"
+			# [Square brackets]
+			name:  "string.quoted.other.sound.action.square-brackets.srt"
 			begin: "\\["
 			end:   "\\]|(?=^[ \\t]*$)"
+			beginCaptures: 0: name: "punctuation.definition.string.begin.srt"
+			endCaptures:   0: name: "punctuation.definition.string.end.srt"
+			patterns: [include: "#formatting"]
+		},{
+			# (Parentheses)
+			name:  "string.quoted.other.sound.action.round-brackets.srt"
+			begin: "\\("
+			end:   "\\)|(?=^[ \\t]*$)"
 			beginCaptures: 0: name: "punctuation.definition.string.begin.srt"
 			endCaptures:   0: name: "punctuation.definition.string.end.srt"
 			patterns: [include: "#formatting"]
