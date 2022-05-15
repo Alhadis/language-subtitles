@@ -7,3 +7,10 @@
 		defaultLineEnding: "CRLF"
 	whitespace:
 		ensureSingleTrailingNewline: false
+
+".text.vtt":
+	core:
+		fileEncoding: "utf8"
+	editor:
+		commentStart: "NOTE "
+		commentEnd:   "\n\n"
