@@ -1,0 +1,22 @@
+".text.srt":
+	
+	# Formatting/text styles
+	Bold:            {prefix: "b", body: "<b>$1</b>$0"}
+	Italic:          {prefix: "i", body: "<i>$1</i>$0"}
+	Underline:       {prefix: "u", body: "<u>$1</u>$0"}
+	Strikethrough:   {prefix: "s", body: "<s>$1</s>$0"}
+	Font:            {prefix: "f", body: "<font$1>$2</font>$0"}
+	"Coloured text": {prefix: "c", body: '<font color="${1:#FFFFFF}">$2</font>$0'}
+
+	# Document elements
+	Subtitle:
+		prefix: "sub"
+		body: """
+			${1:1}
+			${2:00}:${3:00}:${4:00},${5:000} --> ${6:00}:${7:00}:${8:00},${9:000}
+			$0
+		"""
+
+	Timecode:
+		prefix: "t"
+		body: "${1:00}:${2:00}:${3:00},${4:000} --> ${5:00}:${6:00}:${7:00},${8:000}$0"

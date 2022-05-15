@@ -1,0 +1,9 @@
+".text.srt":
+	editor:
+		atomicSoftTabs: false
+		autoIndentOnPaste: false
+		softTabs: false
+	"line-ending-selector":
+		defaultLineEnding: "CRLF"
+	whitespace:
+		ensureSingleTrailingNewline: false
