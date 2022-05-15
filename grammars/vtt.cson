@@ -79,10 +79,52 @@ repository:
 			{include: "#cueUnderline"}
 			{include: "#cueRuby"}
 			{include: "#cueVoice"}
-			{include: "#cueLanguage"}
+			{include: "#cueSpan"}
 			{include: "#cueTimestamp"}
 			{include: "text.html.basic#character-reference"}
 		]
+
+	# <tag.class annotation>…</tag>
+	cueSpan:
+		name:  "meta.cue-span.$2-tag.vtt"
+		begin: "(<)([A-Za-z_:][-\\w:]*)((?:\\.[^\\t\\n\\r &<>.]+)*\\.?)(?=$|\\s|/?>|\\.[^\\s&<>.])"
+		end:   "((</)(\\2)\\s*(>))|(/>)|(?=^[ \\t]*$)"
+		beginCaptures:
+			0: name: "meta.tag.opening.vtt"
+			1: name: "punctuation.definition.tag.begin.vtt"
+			2: name: "entity.name.tag.localname.vtt"
+			3: name: "meta.tag.classes.vtt", patterns: [{
+				name: "entity.other.attribute-name.class.vtt"
+				match: "(\\.)[^.]+"
+				captures:
+					1: name: "punctuation.definition.entity.class.vtt"
+			}]
+		endCaptures:
+			1: name: "meta.tag.closing.vtt"
+			2: name: "punctuation.definition.tag.begin.vtt"
+			3: name: "entity.name.tag.localname.vtt"
+			4: name: "punctuation.definition.tag.end.vtt"
+			5: name: "punctuation.definition.tag.end.self-closing.vtt"
+		patterns: [{
+			# Remainder of opening tag
+			name:  "meta.tag.opening.vtt"
+			begin: "\\G(?!\\s*/>)"
+			end:   ">|(?=\\s*/>)"
+			endCaptures:
+				0: name: "punctuation.definition.tag.end.vtt"
+			patterns: [{
+				# Annotation
+				name:  "string.unquoted.annotation.vtt"
+				begin: "\\G[ \\t]+"
+				end:   "(?=\\s*/?>|^[ \\t]*$)"
+				patterns: [include: "text.html.basic#character-reference"]
+			}]
+		},{
+			name:  "meta.content.vtt"
+			begin: "(?<=>)"
+			end:   "(?=</[A-Za-z_:]|^[ \\t]*$)"
+			patterns: [include: "#cueComponents"]
+		}]
 
 
 	# Caption/subtitle content
