@@ -37,6 +37,19 @@ repository:
 		match: "\\S*?-->\\S*"
 
 
+	# Character reference, sourced from HTML grammar
+	charRef:
+		patterns: [include: "text.html.basic#character-reference"]
+
+
+	# Cue-span class
+	class:
+		name:  "entity.other.attribute-name.class.vtt"
+		match: "(\\.)[^\\s&<>.]+"
+		captures:
+			1: name: "punctuation.definition.entity.class.vtt"
+
+
 	# Comment block
 	comment:
 		name:  "comment.block.vtt"
@@ -69,68 +82,262 @@ repository:
 			{include: "#cuePayload"}
 		]
 
-	
+
 	# Spans, HTML-ish syntax, and other interesting stuff
 	cueComponents:
 		patterns: [
-			{include: "#cueClass"}
-			{include: "#cueItalic"}
-			{include: "#cueBold"}
-			{include: "#cueUnderline"}
-			{include: "#cueRuby"}
-			{include: "#cueVoice"}
 			{include: "#cueSpan"}
 			{include: "#cueTimestamp"}
-			{include: "text.html.basic#character-reference"}
+			{include: "#charRef"}
 		]
 
-	# <tag.class annotation>…</tag>
+	# Demarcated regions of text
 	cueSpan:
-		name:  "meta.cue-span.$2-tag.vtt"
-		begin: "(<)([A-Za-z_:][-\\w:]*)(?=$|\\s|/?>|\\.)"
-		end:   "(?=^[ \\t]*$)|((</)(\\2)\\s*(>))|(/>)"
-		beginCaptures:
-			0: name: "meta.tag.opening.vtt"
-			1: name: "punctuation.definition.tag.begin.vtt"
-			2: name: "entity.name.tag.localname.vtt"
-		endCaptures:
-			1: name: "meta.tag.closing.vtt"
-			2: name: "punctuation.definition.tag.begin.vtt"
-			3: name: "entity.name.tag.localname.vtt"
-			4: name: "punctuation.definition.tag.end.vtt"
-			5: name: "punctuation.definition.tag.end.self-closing.vtt"
-		patterns: [include: "#cueSpanInnards", {
-			name:  "meta.content.vtt"
-			begin: "(?<=>)"
-			end:   "(?=</[A-Za-z_:]|^[ \\t]*$)"
-			patterns: [include: "#cueComponents"]
+		patterns: [{
+			# Class span: <c.class>…</c>
+			name:  "meta.span.class-span.vtt"
+			begin: "(<)(c)(?=$|\\s|/?>|\\.)"
+			end:   "(?=^[ \\t]*$)|((</)(c)\\s*(>))|(/>)"
+			beginCaptures:
+				0: name: "meta.tag.opening.vtt"
+				1: name: "punctuation.definition.tag.begin.vtt"
+				2: name: "entity.name.tag.localname.vtt"
+			endCaptures:
+				1: name: "meta.tag.closing.vtt"
+				2: name: "punctuation.definition.tag.begin.vtt"
+				3: name: "entity.name.tag.localname.vtt"
+				4: name: "punctuation.definition.tag.end.vtt"
+				5: name: "punctuation.definition.tag.end.self-closing.vtt"
+			patterns: [
+				{include: "#cueSpanStart"}
+				{include: "#cueSpanBody"}
+			]
+		},{
+			# Italics span: <i.class>Italicised text</c>
+			name:  "meta.span.italics-span.vtt"
+			begin: "(<)(i)(?=$|\\s|/?>|\\.)"
+			end:   "(?=^[ \\t]*$)|((</)(i)\\s*(>))|(/>)"
+			beginCaptures:
+				0: name: "meta.tag.opening.vtt"
+				1: name: "punctuation.definition.tag.begin.vtt"
+				2: name: "entity.name.tag.localname.vtt"
+			endCaptures:
+				1: name: "meta.tag.closing.vtt"
+				2: name: "punctuation.definition.tag.begin.vtt"
+				3: name: "entity.name.tag.localname.vtt"
+				4: name: "punctuation.definition.tag.end.vtt"
+				5: name: "punctuation.definition.tag.end.self-closing.vtt"
+			patterns: [
+				{include: "#cueSpanStart"}
+				name:  "markup.italic.vtt"
+				begin: "(?<=>)"
+				end:   "(?=</[A-Za-z_:]|^[ \\t]*$)"
+				patterns: [include: "#cueComponents"]
+			]
+		},{
+			# Bold span: <b.class>Emboldened text</b>
+			name:  "meta.span.bold-span.vtt"
+			begin: "(<)(b)(?=$|\\s|/?>|\\.)"
+			end:   "(?=^[ \\t]*$)|((</)(b)\\s*(>))|(/>)"
+			beginCaptures:
+				0: name: "meta.tag.opening.vtt"
+				1: name: "punctuation.definition.tag.begin.vtt"
+				2: name: "entity.name.tag.localname.vtt"
+			endCaptures:
+				1: name: "meta.tag.closing.vtt"
+				2: name: "punctuation.definition.tag.begin.vtt"
+				3: name: "entity.name.tag.localname.vtt"
+				4: name: "punctuation.definition.tag.end.vtt"
+				5: name: "punctuation.definition.tag.end.self-closing.vtt"
+			patterns: [
+				{include: "#cueSpanStart"}
+				name:  "markup.bold.vtt"
+				begin: "(?<=>)"
+				end:   "(?=</[A-Za-z_:]|^[ \\t]*$)"
+				patterns: [include: "#cueComponents"]
+			]
+		},{
+			# Underline span: <u.class>http://underlined-text.org/</u>
+			name:  "meta.span.underline-span.vtt"
+			begin: "(<)(u)(?=$|\\s|/?>|\\.)"
+			end:   "(?=^[ \\t]*$)|((</)(u)\\s*(>))|(/>)"
+			beginCaptures:
+				0: name: "meta.tag.opening.vtt"
+				1: name: "punctuation.definition.tag.begin.vtt"
+				2: name: "entity.name.tag.localname.vtt"
+			endCaptures:
+				1: name: "meta.tag.closing.vtt"
+				2: name: "punctuation.definition.tag.begin.vtt"
+				3: name: "entity.name.tag.localname.vtt"
+				4: name: "punctuation.definition.tag.end.vtt"
+				5: name: "punctuation.definition.tag.end.self-closing.vtt"
+			patterns: [
+				{include: "#cueSpanStart"}
+				name:  "markup.underline.vtt"
+				begin: "(?<=>)"
+				end:   "(?=</[A-Za-z_:]|^[ \\t]*$)"
+				contentName: "string.other.link.vtt"
+				patterns: [include: "#cueComponents"]
+			]
+		},{
+			# Ruby gloss: <ruby.class>Base text<rt>Ruby text</rt></ruby>
+			name:  "meta.span.ruby-span.vtt"
+			begin: "(<)(ruby)(?=$|\\s|/?>|\\.)"
+			end:   "(?=^[ \\t]*$)|((</)(ruby)\\s*(>))|(/>)"
+			beginCaptures:
+				0: name: "meta.tag.opening.vtt"
+				1: name: "punctuation.definition.tag.begin.vtt"
+				2: name: "entity.name.tag.localname.vtt"
+			endCaptures:
+				1: name: "meta.tag.closing.vtt"
+				2: name: "punctuation.definition.tag.begin.vtt"
+				3: name: "entity.name.tag.localname.vtt"
+				4: name: "punctuation.definition.tag.end.vtt"
+				5: name: "punctuation.definition.tag.end.self-closing.vtt"
+			patterns: [
+				{include: "#cueSpanStart"}
+				{include: "#cueSpanBody"}
+			]
+		},{
+			# Ruby text: <rt>…</rt>
+			name:  "meta.span.ruby-text-span.vtt"
+			begin: "(<)(rt)(?=$|\\s|/?>|\\.)"
+			end:   "(?=^[ \\t]*$)|((</)(rt)\\s*(>))|(/>)|(?=\\s*</ruby\\s*>)"
+			beginCaptures:
+				0: name: "meta.tag.opening.vtt"
+				1: name: "punctuation.definition.tag.begin.vtt"
+				2: name: "entity.name.tag.localname.vtt"
+			endCaptures:
+				1: name: "meta.tag.closing.vtt"
+				2: name: "punctuation.definition.tag.begin.vtt"
+				3: name: "entity.name.tag.localname.vtt"
+				4: name: "punctuation.definition.tag.end.vtt"
+				5: name: "punctuation.definition.tag.end.self-closing.vtt"
+			patterns: [
+				{include: "#cueSpanStart"}
+				{include: "#cueSpanBody"}
+			]
+		},{
+			# Voice span: <v.class Narrator>…</v>
+			name:  "meta.span.voice-span.vtt"
+			begin: "(<)(v)(?=$|\\s|/?>|\\.)"
+			end:   "(?=^[ \\t]*$)|((</)(v)\\s*(>))|(/>)"
+			beginCaptures:
+				0: name: "meta.tag.opening.vtt"
+				1: name: "punctuation.definition.tag.begin.vtt"
+				2: name: "entity.name.tag.localname.vtt"
+			endCaptures:
+				1: name: "meta.tag.closing.vtt"
+				2: name: "punctuation.definition.tag.begin.vtt"
+				3: name: "entity.name.tag.localname.vtt"
+				4: name: "punctuation.definition.tag.end.vtt"
+				5: name: "punctuation.definition.tag.end.self-closing.vtt"
+			patterns: [{
+				# Remainder of opening tag
+				name:  "meta.tag.opening.vtt"
+				begin: "\\G(?!\\s*/>)((?:\\.[^\\s&<>.]+)*\\.?)?"
+				end:   ">|(?=\\s*/>|^[ \\t]*$)"
+				beginCaptures:
+					1: patterns: [include: "#class"]
+				endCaptures:
+					0: name: "punctuation.definition.tag.end.vtt"
+				patterns: [{
+					# Name of speaker
+					name:  "meta.annotation.vtt"
+					begin: "(?:[ \\t]|^|\\G)(?=\\S)(?!>|&)"
+					end:   "(?=$|>|&|^[ \\t]*$)"
+					contentName: "entity.name.voice.vtt"
+					patterns: [include: "#charRef"]
+				}]
+			}, include: "#cueSpanBody"]
+		},{
+			# Language span: <lang.class bcp47-tag>…</lang>
+			name:  "meta.span.language-span.vtt"
+			begin: "(<)(lang)(?=$|\\s|/?>|\\.)"
+			end:   "(?=^[ \\t]*$)|((</)(lang)\\s*(>))|(/>)"
+			beginCaptures:
+				0: name: "meta.tag.opening.vtt"
+				1: name: "punctuation.definition.tag.begin.vtt"
+				2: name: "entity.name.tag.localname.vtt"
+			endCaptures:
+				1: name: "meta.tag.closing.vtt"
+				2: name: "punctuation.definition.tag.begin.vtt"
+				3: name: "entity.name.tag.localname.vtt"
+				4: name: "punctuation.definition.tag.end.vtt"
+				5: name: "punctuation.definition.tag.end.self-closing.vtt"
+			patterns: [{
+				# Remainder of opening tag
+				name:  "meta.tag.opening.vtt"
+				begin: "\\G(?!\\s*/>)((?:\\.[^\\s&<>.]+)*\\.?)?"
+				end:   ">|(?=\\s*/>|^[ \\t]*$)"
+				beginCaptures:
+					1: patterns: [include: "#class"]
+				endCaptures:
+					0: name: "punctuation.definition.tag.end.vtt"
+				patterns: [{
+					# Name of language
+					name:  "meta.annotation.vtt"
+					begin: "(?:[ \\t]|^|\\G)(?=\\S)(?!>|&)"
+					end:   "(?=$|>|&|^[ \\t]*$)"
+					contentName: "constant.language.locale.bcp47.vtt"
+					patterns: [include: "#charRef"]
+				}]
+			}, include: "#cueSpanBody"]
+		},{
+			# Anything else: <tag.class annotation>…</tag>
+			name:  "meta.span.$2-span.vtt"
+			begin: "(<)([A-Za-z_:][-\\w:]*)(?=$|\\s|/?>|\\.)"
+			end:   "(?=^[ \\t]*$)|((</)(\\2)\\s*(>))|(/>)"
+			beginCaptures:
+				0: name: "meta.tag.opening.vtt"
+				1: name: "punctuation.definition.tag.begin.vtt"
+				2: name: "entity.name.tag.localname.vtt"
+			endCaptures:
+				1: name: "meta.tag.closing.vtt"
+				2: name: "punctuation.definition.tag.begin.vtt"
+				3: name: "entity.name.tag.localname.vtt"
+				4: name: "punctuation.definition.tag.end.vtt"
+				5: name: "punctuation.definition.tag.end.self-closing.vtt"
+			patterns: [{
+				# Remainder of opening start-tag that accepts an annotation
+				name:  "meta.tag.opening.vtt"
+				begin: "\\G(?!\\s*/>)((?:\\.[^\\s&<>.]+)*\\.?)?"
+				end:   ">|(?=\\s*/>|^[ \\t]*$)"
+				beginCaptures:
+					1: patterns: [include: "#class"]
+				endCaptures:
+					0: name: "punctuation.definition.tag.end.vtt"
+				patterns: [{
+					# Annotation
+					name:  "meta.annotation.vtt"
+					begin: "(?:[ \\t]|^|\\G)(?=\\S)(?!>|&)"
+					end:   "(?=$|>|&|^[ \\t]*$)"
+					contentName: "string.unquoted.annotation.vtt"
+					patterns: [include: "#charRef"]
+				}]
+			}, include: "#cueSpanBody"]
 		}]
 
 
 	# Remainder of opening cue-span tag
-	cueSpanInnards:
+	cueSpanStart:
 		name:  "meta.tag.opening.vtt"
 		begin: "\\G(?!\\s*/>)((?:\\.[^\\s&<>.]+)*\\.?)?"
 		end:   ">|(?=\\s*/>|^[ \\t]*$)"
 		beginCaptures:
-			1: patterns: [include: "#cueSpanClasses"]
+			1: patterns: [include: "#class"]
 		endCaptures:
 			0: name: "punctuation.definition.tag.end.vtt"
-		patterns: [{
-			# Annotation
-			contentName: "string.unquoted.annotation.vtt"
-			begin: "(?:[ \\t]+|^|\\G)(?=\\S)(?!>|&)"
-			end:   "(?=$|>|&|^[ \\t]*$)"
-			patterns: [include: "text.html.basic#character-reference"]
-		}]
+		contentName: "invalid.illegal.unexpected-annotation.vtt"
+		patterns: [include: "#charRef"]
 
 
-	# Classes list
-	cueSpanClasses:
-		name:  "entity.other.attribute-name.class.vtt"
-		match: "(\\.)[^\\s&<>.]+"
-		captures:
-			1: name: "punctuation.definition.entity.class.vtt"
+	# Everything that follows the closing bracket of a cue-span's opening tag
+	cueSpanBody:
+		name:  "meta.content.vtt"
+		begin: "(?<=>)"
+		end:   "(?=</[A-Za-z_:]|^[ \\t]*$)"
+		patterns: [include: "#cueComponents"]
 
 
 	# Caption/subtitle content

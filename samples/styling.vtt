@@ -23,3 +23,24 @@ Style blocks can't appear after the first cue block (FIXME)
 
 00:00:10.000 --> 00:00:15.000
 <c.yellow.bg_blue>This is yellow text on a blue background</c>
+
+00:00:20.000 --> 00:00:25.000
+<b>Bold text</b>, <i>italic text</i>, <u>underlined text</u>.
+
+00:00:25.000 --> 00:00:30.000
+Combination of the above: <b>Bold, <i>italic <u>underlined</u></i></b>
+
+hello-yellow
+00:00:00.000 --> 00:00:08.000
+<c.loud>Yellow!</c>
+<i.loud>Yellow!</i>
+<u.loud>Yellow!</u>
+<b.loud>Yellow!</b>
+<u.loud>Yellow!</u>
+<ruby.loud>Yellow! <rt.loud>Yellow!</ruby>
+
+annotated-spans
+00:00:30.000 --> 00:00:40.000
+<v.narration David Attenborough><i>Euphonic description of wild animal.</i></v>
+<lang en-GB>Git on wit ye</lang>
+<00:00:30.000>
