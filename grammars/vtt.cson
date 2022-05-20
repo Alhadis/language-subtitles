@@ -1,6 +1,8 @@
 name: "WebVTT"
 scopeName: "text.vtt"
+mimeType: "text/vtt"
 fileTypes: ["vtt"]
+firstLineMatch: "\\A\uFEFF?WEBVTT(?:[\\n\\r \\t]|\z)"
 patterns: [{
 	# Root-level element
 	name:  "meta.file-body.vtt"
