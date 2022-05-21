@@ -6,20 +6,17 @@ firstLineMatch: "\\A\uFEFF?WEBVTT(?:[\\n\\r \\t]|\z)"
 patterns: [{
 	# Root-level element
 	name:  "meta.file-body.vtt"
-	begin: "\\A\uFEFF?(WEBVTT)(?:[ \\t]([^\\r\\n]*))?$"
+	begin: "\\A\uFEFF?(WEBVTT)(?=$|[ \\t])"
 	end:   "(?=A)B"
 	beginCaptures:
 		1: name: "keyword.control.start-file.vtt"
-		2: name: "comment.line.ignored.vtt"
 	patterns: [{
-		# Require a blank line immediately after “WEBVTT” signature
+		# Mark anything immediately following the “WEBVTT” signature as ignored
+		name:  "meta.header.vtt"
 		begin: "\\G"
 		end:   "^[ \\t]*$"
-		patterns: [{
-			# Flag anything on the second line as an error
-			name: "invalid.illegal.unexpected-junk.vtt"
-			match: "\\S+"
-		}]
+		contentName: "comment.line.ignored.vtt"
+		patterns: [include: "#setting"]
 	}, include: "#main"]
 }, include: "#main"]
 
@@ -395,6 +392,16 @@ repository:
 		end:   "^[ \\t]*$"
 		beginCaptures:
 			1: name: "storage.type.region.vtt"
+		patterns: [{
+			# Region identifier setting
+			name:  "meta.setting.with-value.vtt"
+			match: "^(id)(:)(?:(.*?-->.*?)|(\\S+))"
+			captures:
+				1: name: "variable.assignment.setting-name.vtt"
+				2: name: "keyword.operator.assignment.key-value.colon.vtt"
+				3: patterns: [include: "#badArrow"]
+				4: name: "entity.name.region.vtt"
+		}, include: "#setting"]
 
 
 	# Style block
@@ -410,22 +417,81 @@ repository:
 		patterns: [include: "source.css"]
 
 
-	# Setting names with possible values attached
+	# “setting:value”
 	setting:
+		name:  "meta.setting.generic.vtt"
+		begin: "([^\\s:]+?)(:)"
+		end:   "(?!\\G)"
+		beginCaptures:
+			1: name: "variable.assignment.setting-name.vtt"
+			2: name: "keyword.operator.assignment.key-value.colon.vtt"
 		patterns: [{
-			# “name:optional-value”
-			name: "meta.setting.with-value.vtt"
-			match: "([^\\s:]+?)(:)(\\S*)"
+			# QUESTION: Is whitespace permitted after the colon or not? Assume so for now.
+			begin: "\\G(?=[ \\t]*\\S)"
+			end:   "(?!\\G)(?=\\s|$)"
+			patterns: [{
+				# “scroll:up”
+				match: "(?<=scroll:)\\G([ \\t]*)(up)(?=$|\\s)"
+				captures:
+					1: name: "punctuation.whitespace.inline.vtt"
+					2: name: "constant.language.scroll-setting.vtt"
+			},{
+				# “vertical:[rl|lr]”
+				match: "(?<=vertical:)\\G([ \\t]*)(rl|lr)(?=$|\\s)"
+				captures:
+					1: name: "punctuation.whitespace.inline.vtt"
+					2: name: "constant.language.vertical-setting.vtt"
+			},{
+				# “line:[start|center|end]”
+				match: "(?<=line:)\\G([ \\t]*)(start|center|end)(?=$|\\s)"
+				captures:
+					1: name: "punctuation.whitespace.inline.vtt"
+					2: name: "constant.language.line-setting.vtt"
+			},{
+				# “position:[0-100]%,[center|line-left|line-right]”
+				match: "(?<=position:)\\G([ \\t]*)([0-9]+%,)(center|line-left|line-right)(?=$|\\s)"
+				captures:
+					1: name: "punctuation.whitespace.inline.vtt"
+					2: patterns: [include: "#settingValue"]
+					3: name: "constant.language.position-setting.vtt"
+			},{
+				# “align:[center|end|left|right|start]”
+				match: "(?<=align:)\\G([ \\t]*)(center|end|left|right|start)(?=$|\\s)"
+				captures:
+					1: name: "punctuation.whitespace.inline.vtt"
+					2: patterns: [include: "#settingValue"]
+					3: name: "constant.language.align-setting.vtt"
+			}, include: "#settingValue"]
+		}]
+	
+	
+	# Various values matched in the right-hand half of a “setting:…” assignment
+	settingValue:
+		patterns: [{
+			# Percentile value: [0..100]%
+			name:  "constant.numeric.percentage.vtt"
+			match: "[0-9]+(?:\\.[0-9]+)?(%)"
 			captures:
-				1: name: "variable.assignment.setting-name.vtt"
-				2: name: "keyword.operator.assignment.key-value.colon.vtt"
-				3: name: "constant.other.setting-value.vtt"
+				1: name: "punctuation.definition.percentage.vtt"
 		},{
-			# “name-only”
-			name: "meta.setting.without-value.vtt"
-			match: "[^\\s:]+?(?=$|\\s)"
-			captures:
-				0: name: "variable.assignment.setting-name.vtt"
+			# Unsigned integer
+			name:  "constant.numeric.integer.int.vtt"
+			match: "[0-9]+\\b(?!%|\\.[0-9])"
+		},{
+			# “auto” keyword, used by multiple settings
+			name: "constant.language.auto.vtt"
+			match: "\\bauto\\b(?=$|\\s|,)"
+		},{
+			# Comma separating percentage pairs
+			name:  "punctuation.separator.delimiter.comma.vtt"
+			match: ","
+		},{
+			# Prevent the fallback below from matching “-->” where it isn't allowed
+			include: "#badArrow"
+		},{
+			# Assume anything else is a bareword identifier (unquoted string)
+			name: "constant.other.setting-value.vtt"
+			match: ".+"
 		}]
 
 
