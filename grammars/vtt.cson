@@ -43,10 +43,25 @@ repository:
 
 	# Cue-span class
 	class:
-		name:  "entity.other.attribute-name.class.vtt"
-		match: "(\\.)[^\\s&<>.]+"
-		captures:
-			1: name: "punctuation.definition.entity.class.vtt"
+		patterns: [{
+			# Predefined classes: Foreground (text) colours
+			name:  "support.constant.colour.foreground.$2.vtt"
+			match: "(\\.)(black|blue|cyan|lime|magenta|red|white|yellow)(?=$|[\\s&<>.])"
+			captures:
+				1: name: "punctuation.definition.entity.class.vtt"
+		},{
+			# Predefined classes: Background colours
+			name:  "support.constant.colour.background.$2.vtt"
+			match: "(\\.)bg_(black|blue|cyan|lime|magenta|red|white|yellow)(?=$|[\\s&<>.])"
+			captures:
+				1: name: "punctuation.definition.entity.class.vtt"
+		},{
+			# Anything else
+			name:  "entity.other.attribute-name.class.vtt"
+			match: "(\\.)[^\\s&<>.]+"
+			captures:
+				1: name: "punctuation.definition.entity.class.vtt"
+		}]
 
 
 	# Comment block
