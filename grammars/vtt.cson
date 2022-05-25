@@ -102,8 +102,18 @@ repository:
 		patterns: [
 			{include: "#cueSpan"}
 			{include: "#cueTimestamp"}
+			{include: "#cueDash"}
 			{include: "#charRef"}
 		]
+
+
+	# Quotation dash, used when indicating separate speakers
+	cueDash:
+		name:  "markup.quote.quotation-dash.vtt"
+		match: "(?:^|\\G)([-–—―⸺⸻〜〰︱︲﹘﹣－])"
+		captures:
+			1: name: "punctuation.section.quote.vtt"
+
 
 	# Demarcated regions of text
 	cueSpan:
