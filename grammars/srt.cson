@@ -29,6 +29,14 @@ repository:
 		}]
 
 
+	# Timecode separator, best viewed with ligature-aware fonts: -->
+	arrow:
+		name: "keyword.operator.timespan.srt"
+		match: "-->"
+		captures:
+			0: name: "punctuation.definition.separator.srt"
+
+
 	# <b>BOLD</b>
 	bold:
 		contentName: "markup.bold.srt"
@@ -173,31 +181,29 @@ repository:
 				# Zero-length timecodes are sometimes used to encode comments and metadata
 				name:  "meta.timespan.empty.srt"
 				begin: """(?x) ^
-					([0-9]{2}:[0-9]{2}:[0-9]{2},[0-9]{3}) \\x20((-->))\\x20 (\\1)
+					([0-9]{2}:[0-9]{2}:[0-9]{2}[,.][0-9]{3}) \\x20(-->)\\x20 (\\1)
 					((?:\\s*[XY][0-9]+:[-+]?[0-9]+(?:\\.[0-9]+)?)++)?
 					[ \\t]* $ """
 				end: "(?=^[ \\t]*$)"
 				beginCaptures:
-					1: name: "constant.numeric.time.timecode.start.srt"
-					2: name: "keyword.operator.timespan.srt"
-					3: name: "punctuation.definition.separator.srt"
-					4: name: "constant.numeric.time.timecode.end.srt"
-					5: patterns: [include: "#linePosition"]
+					1: patterns: [include: "#timecode"], name: "constant.numeric.time.timecode.start.srt"
+					3: patterns: [include: "#timecode"], name: "constant.numeric.time.timecode.end.srt"
+					2: patterns: [include: "#arrow"]
+					4: patterns: [include: "#linePosition"]
 				contentName: "comment.block.ignored.hidden-subtitle.srt"
 			},{
 				# Timecodes of the form "00:12:43,471 --> 00:12:45,597"
 				name:  "meta.timespan.srt"
 				match: """(?x) ^
-					([0-9]{2}:[0-9]{2}:[0-9]{2},[0-9]{3}) \\x20((-->))\\x20
-					([0-9]{2}:[0-9]{2}:[0-9]{2},[0-9]{3})
+					([0-9]{2}:[0-9]{2}:[0-9]{2}[,.][0-9]{3}) \\x20(-->)\\x20
+					([0-9]{2}:[0-9]{2}:[0-9]{2}[,.][0-9]{3})
 					((?:\\s*[XY][0-9]+:[-+]?[0-9]+(?:\\.[0-9]+)?)++)?
 					[ \\t]* $ """
 				captures:
-					1: name: "constant.numeric.time.timecode.start.srt"
-					2: name: "keyword.operator.timespan.srt"
-					3: name: "punctuation.definition.separator.srt"
-					4: name: "constant.numeric.time.timecode.end.srt"
-					5: patterns: [include: "#linePosition"]
+					1: patterns: [include: "#timecode"], name: "constant.numeric.time.timecode.start.srt"
+					3: patterns: [include: "#timecode"], name: "constant.numeric.time.timecode.end.srt"
+					2: patterns: [include: "#arrow"]
+					4: patterns: [include: "#linePosition"]
 			}, include: "#text"]
 		}, include: "#text"]
 
@@ -211,6 +217,19 @@ repository:
 			{include: "#lyrics"}
 			{include: "#formatting"}
 		]
+
+
+	# Questionable patterns matched inside a tokenised timecode
+	timecode:
+		patterns: [{
+			# Some implementations (wrongly) accept dots instead of commas
+			name: "invalid.illegal.syntax.decimal-separator.srt"
+			match: "\\."
+		},{
+			# Highlight minute and second values outside the [00-59] range
+			name: "invalid.illegal.value.out-of-range.vtt"
+			match: "(?<=:)([6-9][0-9])"
+		}]
 
 
 	# Underlined text
