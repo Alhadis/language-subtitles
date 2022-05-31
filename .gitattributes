@@ -1,5 +1,9 @@
 # Include CSON files in GitHub's language breakdown graph
 *.cson linguist-detectable
 
-# Exclude test fixtures from language analysis
-samples/* linguist-documentation
+# Exclude fixtures from language analysis and newline conversion
+*.srt linguist-documentation -text
+*.vtt linguist-documentation -text
+
+# Omit fixtures when tarballing package
+samples export-ignore

@@ -1,0 +1,97 @@
+1
+00:00:00,000 --> 00:00:03,500
+Tester for overlapped subtitles in SubRip subtitles 1.2 by ale5000
+<b><i>Use VLC 1.0.3 or higher as reference</i></b>
+
+2
+00:00:03,500 --> 00:00:05,500
+TEXT 1 (bottom)
+
+3
+00:00:03,500 --> 00:00:10,500
+text 2
+
+4
+00:00:03,500 --> 00:00:05,500
+TEXT 3
+
+5
+00:00:03,500 --> 00:00:10,500
+text 4
+
+6
+00:00:05,501 --> 00:00:10,500
+Since it need two lines to be displayed, then the position is the first free position (5)
+
+7
+00:00:05,501 --> 00:00:10,500
+1 Bla bla bla
+
+8
+00:00:05,501 --> 00:00:10,500
+3 Bli bli bli
+
+9
+00:00:05,501 --> 00:00:10,500
+6 Blo blo blo
+
+10
+00:00:10,501 --> 00:00:15,500
+1 Zig zag zig zag zig zag zig zag zig zag zig zag zig zag zig zag
+
+11
+00:00:10,501 --> 00:00:20,500
+2 Bim bum bim bum bim bum bim bum bim bum bim bum bim bum bim bum
+
+12
+00:00:15,501 --> 00:00:20,500
+3 Zzzzzh zzzzzzh zzzzzzh zzzzzzh zzzzzzh zzzzzzh zzzzzzh zzzzzzh zzzzzzh zzzzzzhhhhhhhh
+
+13
+00:00:20,502 --> 00:00:25,500
+TEXT 1 
+
+14
+00:00:20,501 --> 00:00:25,500
+text 2 (come first, bottom)
+
+15
+00:00:25,501 --> 00:00:30,500
+TEXT 1 (come first, bottom)
+
+16
+00:00:25,501 --> 00:00:30,500
+text 2
+
+17
+00:00:30,501 --> 00:00:35,500
+TEXT A
+
+18
+00:00:35,500 --> 00:00:40,500
+TEXT B, it should take place of the text a
+
+19
+00:00:40,501 --> 00:00:45,500
+TEXT A1
+
+20
+00:00:45,499 --> 00:00:50,500
+TEXT B1, it should NOT take place of the text a1 (look at the start time)
+
+21
+00:00:50,501 --> 00:00:54,500
+{\an8}First line (top)
+
+22
+00:00:50,501 --> 00:00:54,500
+{\an8}Second line
+
+23
+00:00:52,501 --> 00:00:54,500
+{\an7}OK (top-left)
+
+24
+00:00:52,501 --> 00:00:54,500
+{\an7}OK (it shouldn't overlap other lines)
+

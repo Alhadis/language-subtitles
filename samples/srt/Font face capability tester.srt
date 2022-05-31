@@ -1,0 +1,16 @@
+1
+00:00:01,500 --> 00:00:50,500
+Font face capability tester 1.1e by ale5000
+<b><i>Use Media Player Classic Home Cinema as reference</i></b>
+Normal FONT -<font>- FONT</font>
+Normal FONT -<font face="">- "" FONT</font>
+Normal FONT -<font face="Non-existent font">- Non-existent FONT</font>
+Normal FONT -<font face="Arial">- FONT Arial</font>
+Normal FONT -<font face="arial black">- FONT arial black</font>
+Normal FONT -<font face="Arial Unicode MS">- FONT Arial Unicode MS</font>
+Normal FONT -<font face="Aramis Italic">- FONT Aramis Italic</font>
+Normal FONT -<font face="MS Gothic">- FONT MS Gothic</font>
+Normal FONT -<font face="Roman">- FONT Roman</font>
+Normal FONT -<font face="Webdings">- Webdings</font>
+Normal FONT -<font face="Symbol">- FONT Symbol</font>
+
