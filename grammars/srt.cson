@@ -64,6 +64,23 @@ repository:
 			1: name: "punctuation.section.quote.srt"
 
 
+	# Forced whitespace
+	escapes:
+		patterns: [{
+			# Non-breaking space (which SubRip calls a “hard space”)
+			name: "constant.character.whitespace.escape.hard-space.srt"
+			match: "(\\\\)h"
+			captures:
+				1: name: "punctuation.definition.escape.backslash.srt"
+		},{
+			# Forced line-break
+			name: "constant.character.whitespace.escape.forced-newline.srt"
+			match: "(\\\\)N"
+			captures:
+				1: name: "punctuation.definition.escape.backslash.srt"
+		}]
+
+
 	# <font color="#BBAAFF">Coloured text</font>
 	font:
 		contentName: "markup.other.font.srt"
@@ -216,6 +233,7 @@ repository:
 			{include: "#action"}
 			{include: "#lyrics"}
 			{include: "#formatting"}
+			{include: "#escapes"}
 		]
 
 
