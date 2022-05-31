@@ -170,6 +170,21 @@ repository:
 			begin: "\\G\\s*"
 			end:   "(?!\\G)$"
 			patterns: [{
+				# Zero-length timecodes are sometimes used to encode comments and metadata
+				name:  "meta.timespan.empty.srt"
+				begin: """(?x) ^
+					([0-9]{2}:[0-9]{2}:[0-9]{2},[0-9]{3}) \\x20((-->))\\x20 (\\1)
+					((?:\\s*[XY][0-9]+:[-+]?[0-9]+(?:\\.[0-9]+)?)++)?
+					[ \\t]* $ """
+				end: "(?=^[ \\t]*$)"
+				beginCaptures:
+					1: name: "constant.numeric.time.timecode.start.srt"
+					2: name: "keyword.operator.timespan.srt"
+					3: name: "punctuation.definition.separator.srt"
+					4: name: "constant.numeric.time.timecode.end.srt"
+					5: patterns: [include: "#linePosition"]
+				contentName: "comment.block.ignored.hidden-subtitle.srt"
+			},{
 				# Timecodes of the form "00:12:43,471 --> 00:12:45,597"
 				name:  "meta.timespan.srt"
 				match: """(?x) ^
