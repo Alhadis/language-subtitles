@@ -29,6 +29,17 @@ repository:
 		}]
 
 
+	# SSA tags supported unofficially for subtitle placement: {\an…}
+	align:
+		name: "meta.tag.override.line-alignment.srt"
+		match: "({)(\\\\a(?:n[1-9]|(10|11|(?!4|8)\\d)))(})"
+		captures:
+			1: name: "punctuation.definition.tag.begin.srt"
+			2: name: "entity.name.tag.srt"
+			3: name: "invalid.deprecated.syntax.tag.srt"
+			4: name: "punctuation.definition.tag.end.srt"
+
+
 	# Timecode separator, best viewed with ligature-aware fonts: -->
 	arrow:
 		name: "keyword.operator.timespan.srt"
@@ -108,7 +119,8 @@ repository:
 			{include: "#underline"}
 			{include: "#strike"}
 			{include: "#font"}
-	]
+			{include: "#align"}
+		]
 
 
 	# <i>ITALIC</i>
