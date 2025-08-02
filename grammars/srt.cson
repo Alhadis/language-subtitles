@@ -167,7 +167,21 @@ repository:
 
 	# Speaker's name preceding caption (often "IN UPPERCASE:")
 	speaker:
-		match: "(?:^|\\G)(-[ \\t]*)?((?:[^-<>\\s:][^:]*(?=:[ \\t]*\\S)|[^-<>\\s:a-z][^:a-z]*)(:))(?=$|\\s)"
+		match: """(?x)
+			(?:^|\\G)
+			(-[ \\t]*)?
+			(
+				(?: [^-<>\\s:]    [^<>:]* (?=:[ \\t]*\\S)
+				|   [^-<>\\s:a-z] [^<>:a-z]*
+				|   <(?!/(?i:[bisu]|font)>\\s*:)
+				)++
+				(?:
+					(?=(?:\\s*</(?i:[bisu]|font)>)++\\s*:)
+					|
+					(:)
+				)
+			)(?=$|\\s|</)
+		"""
 		captures:
 			1: patterns: [include: "#dash"]
 			2: name: "entity.name.speaker.srt", patterns: [
