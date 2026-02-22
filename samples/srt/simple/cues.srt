@@ -1,0 +1,39 @@
+﻿1
+00:00:00,000 --> 00:00:00,999
+- Foo
+-Bar
+
+2
+00:00:01,000 --> 00:00:01,999
+-[loudly] Foo
+-[loudly]Bar
+
+3
+00:00:02,000 --> 00:00:02,999
+-(quietly) Foo
+-(quietly)Bar
+
+4
+00:00:03,000 --> 00:00:03,999
+- John Doe: Hello?
+-Jane Doe: Hello, John.
+
+5
+00:00:04,000 --> 00:00:04,999
+- [enthusiastically] John Doe: Welcome!
+-[enthusiastically]Jane Doe: And to you!
+
+6
+00:00:05,000 --> 00:00:05,999
+- John Doe: [enthusiastically] Welcome!
+-Jane Doe: [enthusiastically] And to you!
+
+7
+00:00:06,000 --> 00:00:06,999
+{\an8}- John Doe: [dourly] These examples suck.
+{\an8}-Jane Doe: Yeah, they do.
+
+8
+00:00:07,000 --> 00:00:07,999
+{\an8}- Foo
+{\an8}-Bar

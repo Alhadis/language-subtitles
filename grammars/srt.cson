@@ -69,10 +69,19 @@ repository:
 
 	# Quotation dash
 	dash:
-		name:  "markup.quote.quotation-dash.srt"
-		match: "(?:^|\\G)(-)"
-		captures:
-			1: name: "punctuation.section.quote.srt"
+		patterns: [{
+			# Beginning of line
+			name:  "markup.quote.quotation-dash.srt"
+			match: "(?:^|\\G)(-)"
+			captures:
+				1: name: "punctuation.section.quote.srt"
+		},{
+			# Immediately after an SSA alignment tag that begins a line
+			match: "(?:^|\\G)((?:{(?:.:|\\\\)[^}]*})++)(-)"
+			captures:
+				1: patterns: [include: "#ssa"]
+				2: patterns: [include: "#dash"]
+		}]
 
 
 	# Forced whitespace
@@ -119,8 +128,7 @@ repository:
 			{include: "#underline"}
 			{include: "#strike"}
 			{include: "#font"}
-			{include: "#align"}
-			{include: "#unknownTag"}
+			{include: "#ssa"}
 		]
 
 
@@ -169,7 +177,8 @@ repository:
 	speaker:
 		match: """(?x)
 			(?:^|\\G)
-			(-[ \\t]*)?
+			((?:{(?:.:|\\\\)[^}]*})*+)
+			(-(?:\\\\h|[ \\t])*)?
 			(
 				(?: [^-<>\\s:]    [^<>:]* (?=:[ \\t]*\\S)
 				|   [^-<>\\s:a-z] [^<>:a-z]*
@@ -183,12 +192,21 @@ repository:
 			)(?=$|\\s|</)
 		"""
 		captures:
-			1: patterns: [include: "#dash"]
-			2: name: "entity.name.speaker.srt", patterns: [
+			1: patterns: [include: "#ssa"]
+			2: patterns: [include: "#dash", {include: "#escapes"}]
+			3: name: "entity.name.speaker.srt", patterns: [
 				{include: "#formatting"}
 				{include: "#action"}
 			]
-			3: name: "punctuation.separator.speaker.colon.srt"
+			4: name: "punctuation.separator.speaker.colon.srt"
+
+
+	# SSA tag extensions, both valid and invalid/unsupported
+	ssa:
+		patterns: [
+			{include: "#align"}
+			{include: "#unknownTag"}
+		]
 
 
 	# Strikethrough text
@@ -299,7 +317,7 @@ repository:
 	# Unrecognised SSA overrides: {\fad(10,10)}, {Y:text…}
 	unknownTag:
 		name: "meta.tag.override.unsupported.srt"
-		match: "({)(?:.:[^}]*|\\\\[^}]*)(})"
+		match: "({)(?:.:|\\\\)[^}]*(})"
 		captures:
 			0: name: "invalid.unimplemented.syntax.tag.srt"
 			1: name: "punctuation.definition.tag.begin.srt"
