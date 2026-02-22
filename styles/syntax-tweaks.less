@@ -1,5 +1,14 @@
-// Theme-specific adjustments to syntax highlighting
+// Disable OpenType ligatures in scoped punctuation
+.syntax--srt, .syntax--vtt{
+	&.syntax--string.syntax--quoted.syntax--other.syntax--sound
+	>.syntax--punctuation.syntax--definition.syntax--string:is(.syntax--begin, .syntax--end),
+	&.syntax--punctuation.syntax--definition.syntax--tag,
+	&.syntax--punctuation.syntax--section.syntax--quote{
+		font-variant-ligatures: none;
+	}
+}
 
+// Theme-specific adjustments to syntax highlighting
 .theme-seti-syntax{
 	.syntax--vtt{
 		&.syntax--support.syntax--constant.syntax--colour{
