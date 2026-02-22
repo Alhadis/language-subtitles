@@ -1,0 +1,18 @@
+﻿1
+00:00:00,000 --> 00:00:00,999
+- Regular
+- <b>Bold</b>
+- <i>Italic</i>
+- <u>Underline</u>
+- <s>Strike-through</s>
+- <b><i><u><s>Altogether now</s></u></i></b>
+
+2
+00:00:01,000 --> 00:00:01,999
+<i>Unclosed styling tags
+should <b>NOT
+
+3
+00:00:02,000 --> 00:00:02,999
+affect the styling of
+subsequent subtitles.
