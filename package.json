@@ -14,5 +14,8 @@
 		"webvtt",
 		"vtt"
 	],
-	"engines": {"atom": "*"}
+	"engines": {"atom": "*"},
+	"dependencies": {
+		"prompt-view": "^1.0.0"
+	}
 }

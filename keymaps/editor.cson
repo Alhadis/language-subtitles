@@ -1,0 +1,18 @@
+# macOS
+"body.platform-darwin atom-text-editor[data-grammar='text vtt'],
+ body.platform-darwin atom-text-editor[data-grammar='text srt']":
+	"cmd-j":       "language-subtitles:go-to-timecode"
+
+"body.platform-darwin atom-text-editor[data-grammar='text srt']":
+	"cmd-g":       "language-subtitles:go-to-subrip-entry"
+	"shift-cmd-i": "language-subtitles:reindex-subtitles"
+
+
+# Linux and Windows
+"body:not(.platform-darwin) atom-text-editor[data-grammar='text vtt'],
+ body:not(.platform-darwin) atom-text-editor[data-grammar='text srt']":
+	"ctrl-j":       "language-subtitles:go-to-timecode"
+
+"body:not(.platform-darwin) atom-text-editor[data-grammar='text srt']":
+	"ctrl-g":       "language-subtitles:go-to-subrip-entry"
+	"shift-ctrl-i": "language-subtitles:reindex-subtitles"
