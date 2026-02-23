@@ -6,6 +6,11 @@ end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = false
 indent_style = tab
+spelling_language = en-AU
+
+[*.{md,markdown,mk{d,dn,down}}]
+max_line_length = 80
+indent_size = 4
 
 [*.{yaml,yml}]
 indent_style = space

@@ -1,5 +1,8 @@
+<!-- vim:se noet lbr tw=80 sts=0 sw=4 ts=4 wrap:
+--*- fill-column: 80; truncate-lines: nil; word-wrap: t; -*-->
+
 SubRip Text stress-tests
-========================
+================================================================================
 
 The fixtures in this directory were written by [ale5000][], who did an excellent
 [write-up][] on numerous compatibility differences between programs that support
@@ -11,6 +14,7 @@ construct (which I've been unable to test with VLC).
 Visit [`ale5000.altervista.org/subtitles.htm`][write-up] for more insight on how
 irredeemably fractured SRT support really is among media players.
 
-<!-- Referenced links -->
+
+<!-- Referenced links --------------------------------------------------------->
 [ale5000]:  https://ale5000.altervista.org/
 [write-up]: https://ale5000.altervista.org/subtitles.htm
