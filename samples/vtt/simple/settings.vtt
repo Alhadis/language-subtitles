@@ -25,3 +25,21 @@ Yellow!
 greenish-blue-or-something-don't-ask-me-I'm-colourblind
 00:00:10.000 --> 00:00:16.000 region:scroll
 Over here it’s Cyan!
+
+00:00:16.000 --> 00:00:20.000 line:6% position:22% align:left
+Top left
+
+00:00:20.000 --> 00:00:24.000 line:50%,center
+Middle
+
+00:00:24.000 --> 00:00:28.000 line:94%,end position:78% align:right
+Bottom right
+
+00:00:28.000 --> 00:00:32.000 line:-2 align:center
+Second line from the bottom
+
+00:00:32.000 --> 00:00:36.000 position:22.5%,line-left align:left
+Decimal position
+
+00:00:36.000 --> 00:00:40.000 position:auto,line-right align:right
+Automatic position
